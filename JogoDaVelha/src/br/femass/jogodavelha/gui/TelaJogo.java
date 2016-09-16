@@ -5,13 +5,20 @@
  */
 package br.femass.jogodavelha.gui;
 
+import br.femass.jogodavelha.aplicacao.JogoDaVelha;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Amanda
  */
 public class TelaJogo extends javax.swing.JFrame {
-    
+
     private String simboloVez = "X";
+    private JogoDaVelha jogo = new JogoDaVelha();
+    private int jogador = 1;
+    private int resultado = 0;
 
     /**
      * Creates new form TelaJogo
@@ -215,73 +222,60 @@ public class TelaJogo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarJogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarJogoActionPerformed
-        btn11.setText("  ");
-        btn12.setText("  ");
-        btn13.setText("  ");
-        btn21.setText("  ");
-        btn22.setText("  ");
-        btn23.setText("  ");
-        btn31.setText("  ");
-        btn32.setText("  ");
-        btn33.setText("  ");
+        zerarTabuleiro();
+        JOptionPane.showMessageDialog(this, "Novo jogo iniciado");
+        this.jogo.iniciarPartida();
     }//GEN-LAST:event_btnIniciarJogoActionPerformed
 
     private void btnEncerrarJogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncerrarJogoActionPerformed
-        btn11.setText("  ");
-        btn12.setText("  ");
-        btn13.setText("  ");
-        btn21.setText("  ");
-        btn22.setText("  ");
-        btn23.setText("  ");
-        btn31.setText("  ");
-        btn32.setText("  ");
-        btn33.setText("  ");
+        zerarTabuleiro();
+        JOptionPane.showMessageDialog(this, "Jogo encerrado");
+        this.jogo.encerrarJogo();
     }//GEN-LAST:event_btnEncerrarJogoActionPerformed
 
     private void btn11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn11ActionPerformed
-        this.btn11.setText(simboloVez);
-        this.trocarSimbolo();
+        tratarJogada(btn11, 0, 0);
     }//GEN-LAST:event_btn11ActionPerformed
 
     private void btn12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn12ActionPerformed
-        this.btn12.setText(simboloVez);
-        this.trocarSimbolo();
+        tratarJogada(btn12, 0, 1);
     }//GEN-LAST:event_btn12ActionPerformed
 
     private void btn13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn13ActionPerformed
-        this.btn13.setText(simboloVez);
-        this.trocarSimbolo();
+        tratarJogada(btn13, 0, 2);
     }//GEN-LAST:event_btn13ActionPerformed
 
     private void btn21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn21ActionPerformed
-        this.btn21.setText(simboloVez);
-        this.trocarSimbolo();
+        tratarJogada(btn21, 1, 0);
     }//GEN-LAST:event_btn21ActionPerformed
 
     private void btn22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn22ActionPerformed
-        this.btn22.setText(simboloVez);
-        this.trocarSimbolo();
+        tratarJogada(btn22, 1, 1);
     }//GEN-LAST:event_btn22ActionPerformed
 
     private void btn23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn23ActionPerformed
-        this.btn23.setText(simboloVez);
-        this.trocarSimbolo();
+        tratarJogada(btn23, 1, 2);
     }//GEN-LAST:event_btn23ActionPerformed
 
     private void btn31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn31ActionPerformed
-        this.btn31.setText(simboloVez);
-        this.trocarSimbolo();
+        tratarJogada(btn31, 2, 0);
     }//GEN-LAST:event_btn31ActionPerformed
 
     private void btn32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn32ActionPerformed
-        this.btn32.setText(simboloVez);
-        this.trocarSimbolo();
+        tratarJogada(btn32, 2, 1);
     }//GEN-LAST:event_btn32ActionPerformed
 
     private void btn33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn33ActionPerformed
-        this.btn33.setText(simboloVez);
-        this.trocarSimbolo();
+        tratarJogada(btn33, 2, 2);
     }//GEN-LAST:event_btn33ActionPerformed
+
+    private void tratarJogada(JButton btn, int linha, int coluna) {
+        btn.setText(simboloVez);
+        this.resultado = this.jogo.proximaJogada(linha, coluna, this.jogador);
+        btn.setEnabled(false);
+        this.trocarSimbolo();
+        this.analisarResultado();
+    }
 
     /**
      * @param args the command line arguments
@@ -340,9 +334,54 @@ public class TelaJogo extends javax.swing.JFrame {
         if (this.simboloVez.equals("X")) {
             this.lblJogadorVez.setText("Jogador 2  O");
             this.simboloVez = "O";
-        }else{
+            this.jogador = 2;
+        } else {
             this.lblJogadorVez.setText("Jogador 1  X");
             this.simboloVez = "X";
+            this.jogador = 1;
         }
+    }
+
+    private void analisarResultado() {
+        if (this.resultado == 1) {
+            JOptionPane.showMessageDialog(this, "Vencedor: Jogador 1");
+            zerarTabuleiro();
+            this.jogo.encerrarJogo();
+        }
+        if (this.resultado == 2) {
+            JOptionPane.showMessageDialog(this, "Vencedor: Jogador 2");
+            zerarTabuleiro();
+            this.jogo.encerrarJogo();
+        }
+        if (this.resultado == 3) {
+            JOptionPane.showMessageDialog(this, "Empate");
+            zerarTabuleiro();
+            this.jogo.encerrarJogo();
+        }
+    }
+
+    private void zerarTabuleiro() {
+        btn11.setText("  ");
+        btn12.setText("  ");
+        btn13.setText("  ");
+        btn21.setText("  ");
+        btn22.setText("  ");
+        btn23.setText("  ");
+        btn31.setText("  ");
+        btn32.setText("  ");
+        btn33.setText("  ");
+        btn11.setEnabled(true);
+        btn12.setEnabled(true);
+        btn13.setEnabled(true);
+        btn21.setEnabled(true);
+        btn22.setEnabled(true);
+        btn23.setEnabled(true);
+        btn31.setEnabled(true);
+        btn32.setEnabled(true);
+        btn33.setEnabled(true);
+        this.jogador = 1;
+        this.resultado = 0;
+        this.simboloVez = "X";
+        this.lblJogadorVez.setText("Jogador 1  X");
     }
 }
