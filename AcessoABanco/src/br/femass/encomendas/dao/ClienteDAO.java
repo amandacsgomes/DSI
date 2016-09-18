@@ -9,6 +9,7 @@ import br.femass.encomendas.modelo.Cliente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -42,5 +43,7 @@ public class ClienteDAO {
         stmt.setString(10, c.getComplemento());
         stmt.setString(11, c.getCidade());
         stmt.setString(12, c.getUf());
+        
+        stmt.execute();
     }
 }

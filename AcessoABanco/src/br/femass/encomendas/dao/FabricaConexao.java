@@ -17,7 +17,7 @@ public class FabricaConexao {
 
     public Connection getConexao() {
         try {
-            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/NomeBaseDeDados","postgres","postgres");
+            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/DSI","postgres","postgresql");
 } catch (SQLException e) {
             throw new RuntimeException(e);
         }
